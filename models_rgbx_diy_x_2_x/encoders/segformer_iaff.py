@@ -329,14 +329,14 @@ class RGBXTransformer(nn.Module):
         #     raise ValueError(f"Module {m2} is not in the allowed list: {models_arr}")
 
         #TODO
-        from ..BFAM_Fourier_V10 import BFAM_Fourier_V10
+        from ..FCF import FCF
         self.m1_objs = nn.ModuleList([
-            BFAM_Fourier_V10(inp=embed_dims[i] * 2, out=embed_dims[i]) for i in range(len(embed_dims))
+            FCF(inp=embed_dims[i] * 2, out=embed_dims[i]) for i in range(len(embed_dims))
         ])
 
-        from ..SDM2d_3 import SDM
+        from ..TAD import TAD
         self.m2_objs = nn.ModuleList([
-            SDM(in_channel=embed_dims[i], guidance_channels=embed_dims[i]) for i in range(len(embed_dims))
+            TAD(in_channel=embed_dims[i], guidance_channels=embed_dims[i]) for i in range(len(embed_dims))
         ])
 
 
@@ -387,9 +387,7 @@ class RGBXTransformer(nn.Module):
         # 直接相加
         # x_fused = x_rgb + x_e
         # print(x_rgb.shape, x_e.shape)
-        m_arr=["AFF",  "BFAM", "CGAFusion",
-            "DFF2d",  "EFF2d",
-            "MDFM", "MSAF2d", "SDM2d", "SFFusion2d","fusionBlock_2D","RDFusion"]
+        m_arr=["TAD","FCF"]
         x_fused1, x_fused2 = None, None
         if self.m1 in m_arr:
             x_fused1 = self.m1_objs[0](x_rgb, x_e)

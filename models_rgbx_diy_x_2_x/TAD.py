@@ -148,9 +148,9 @@ class SDC(nn.Module):
         #print(f"SDC 输出形状: {out.shape}")
         return out
 
-class SDM(nn.Module):
+class TAD(nn.Module):
     def __init__(self, in_channel=3, guidance_channels=2):
-        super(SDM, self).__init__()
+        super(TAD, self).__init__()
         self.sdc1 = SDC(in_channel, guidance_channels)
         self.relu = nn.ReLU(inplace=True)
         self.bn = nn.BatchNorm2d(in_channel)
@@ -264,7 +264,7 @@ if __name__ == '__main__':
     guidance_tensor = torch.randn((1, 3, 32, 32))  # 假设引导张量与输入张量大小相同
 
     # 创建模型
-    model = SDM(in_channel=3, guidance_channels=3)
+    model = TAD(in_channel=3, guidance_channels=3)
     model.eval()
 
     # 打印输入张量的形状

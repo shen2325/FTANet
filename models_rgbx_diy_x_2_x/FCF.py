@@ -87,9 +87,9 @@ class CrossModalFourierAttention(nn.Module):
         
         return attended_inp1, attended_inp2
 
-class BFAM_Fourier_V10(nn.Module):
+class FCF(nn.Module):
     def __init__(self, inp, out):
-        super(BFAM_Fourier_V10, self).__init__()
+        super(FCF, self).__init__()
         C = int(inp / 2)
         self.cross_fourier_attn = CrossModalFourierAttention(dim=C)
         self.pre_siam = simam_module()
@@ -136,11 +136,11 @@ if __name__ == '__main__':
     output_channels = 256
     batch_size = 1
     height, width = 16, 16
-    bfam = BFAM_Fourier_V10(inp=input_channels, out=output_channels)
+    fcf = FCF(inp=input_channels, out=output_channels)
     inp1 = torch.rand(batch_size, input_channels // 2, height, width)
     inp2 = torch.rand(batch_size, input_channels // 2, height, width)
     last_feature = torch.rand(batch_size, input_channels // 2, height, width)
-    output = bfam(inp1, inp2, last_feature)
+    output = fcf(inp1, inp2, last_feature)
     print("inp1 shape:", inp1.shape)
     print("inp2 shape:", inp2.shape)
     print("Output shape:", output.shape)
